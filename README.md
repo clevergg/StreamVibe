@@ -8,9 +8,6 @@ Full-stack приложение по дизайн-макету **StreamVibe** н
 | **Backend** | NestJS · Prisma ORM · PostgreSQL · Swagger · socket.io · Bun |
 | **Инфраструктура** | Docker (PostgreSQL 16) |
 
-> Go в итоге не понадобился: весь функционал (REST API, WebSocket, импорт фильмов)
-> закрывается NestJS без усложнения стека.
-
 ## Быстрый старт (вариант 1: всё в Docker)
 
 ```bash
