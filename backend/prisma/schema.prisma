@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MovieType {
+  MOVIE
+  SERIES
+}
+
+model Movie {
+  id            Int       @id @default(autoincrement())
+  kinopoiskId   Int?      @unique
+  title         String
+  originalTitle String?
+  description   String?
+  year          Int
+  type          MovieType @default(MOVIE)
+  rating        Float     @default(0)
+  votes         Int       @default(0)
+  duration      Int? // минуты
+  ageRating     Int? // 0 / 6 / 12 / 16 / 18
+  posterUrl     String?
+  backdropUrl   String?
+  country       String?
+  isTrending    Boolean   @default(false)
+  isNewRelease  Boolean   @default(false)
+  isMustWatch   Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  genres  Genre[]  @relation("MovieGenres")
+  reviews Review[]
+
+  @@index([type, rating])
+  @@index([year])
+}
+
+model Genre {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  slug   String  @unique
+  movies Movie[] @relation("MovieGenres")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  author    String
+  location  String?
+  rating    Float // 1..10
+  text      String
+  createdAt DateTime @default(now())
+
+  movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  movieId Int
+
+  @@index([movieId])
+}
